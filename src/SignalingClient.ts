@@ -127,10 +127,16 @@ export class SignalingClient extends EventEmitter {
         const queryParams: QueryParams = {
             'X-Amz-ChannelARN': this.config.channelARN,
         };
+
+        var signedURL = "";
+
         if (this.config.role === Role.VIEWER) {
             queryParams['X-Amz-ClientId'] = this.config.clientId;
+            signedURL = `ws://192.168.31.71:8080?channel=1234&clientid=${this.config.clientId}&role=subscriber`;
+        } else {
+            signedURL = "ws://192.168.31.71:8080?channel=1234&clientid=1&role=publisher";
         }
-        const signedURL = await this.requestSigner.getSignedURL(this.config.channelEndpoint, queryParams, this.dateProvider.getDate());
+        //const signedURL = await this.requestSigner.getSignedURL(this.config.channelEndpoint, queryParams, this.dateProvider.getDate());
 
         // If something caused the state to change from CONNECTING, then don't create the WebSocket instance.
         if (this.readyState !== ReadyState.CONNECTING) {

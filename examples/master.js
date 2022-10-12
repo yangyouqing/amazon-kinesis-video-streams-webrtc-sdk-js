@@ -14,82 +14,32 @@ async function startMaster(localView, remoteView, formValues, onStatsReport, onR
     master.localView = localView;
     master.remoteView = remoteView;
 
-    // Create KVS client
-    const kinesisVideoClient = new AWS.KinesisVideo({
-        region: formValues.region,
-        accessKeyId: formValues.accessKeyId,
-        secretAccessKey: formValues.secretAccessKey,
-        sessionToken: formValues.sessionToken,
-        endpoint: formValues.endpoint,
-        correctClockSkew: true,
-    });
-
-    // Get signaling channel ARN
-    const describeSignalingChannelResponse = await kinesisVideoClient
-        .describeSignalingChannel({
-            ChannelName: formValues.channelName,
-        })
-        .promise();
-    const channelARN = describeSignalingChannelResponse.ChannelInfo.ChannelARN;
+    const channelARN = "1";
     console.log('[MASTER] Channel ARN: ', channelARN);
-
-    // Get signaling channel endpoints
-    const getSignalingChannelEndpointResponse = await kinesisVideoClient
-        .getSignalingChannelEndpoint({
-            ChannelARN: channelARN,
-            SingleMasterChannelEndpointConfiguration: {
-                Protocols: ['WSS', 'HTTPS'],
-                Role: KVSWebRTC.Role.MASTER,
-            },
-        })
-        .promise();
-    const endpointsByProtocol = getSignalingChannelEndpointResponse.ResourceEndpointList.reduce((endpoints, endpoint) => {
-        endpoints[endpoint.Protocol] = endpoint.ResourceEndpoint;
-        return endpoints;
-    }, {});
-    console.log('[MASTER] Endpoints: ', endpointsByProtocol);
 
     // Create Signaling Client
     master.signalingClient = new KVSWebRTC.SignalingClient({
         channelARN,
-        channelEndpoint: endpointsByProtocol.WSS,
+        channelEndpoint: "1",
         role: KVSWebRTC.Role.MASTER,
-        region: formValues.region,
+        region: '1',
         credentials: {
-            accessKeyId: formValues.accessKeyId,
-            secretAccessKey: formValues.secretAccessKey,
-            sessionToken: formValues.sessionToken,
+            accessKeyId: '1',
+            secretAccessKey: '1',
+            sessionToken: '1',
         },
-        systemClockOffset: kinesisVideoClient.config.systemClockOffset,
+        systemClockOffset: 1,
     });
 
     // Get ICE server configuration
-    const kinesisVideoSignalingChannelsClient = new AWS.KinesisVideoSignalingChannels({
-        region: formValues.region,
-        accessKeyId: formValues.accessKeyId,
-        secretAccessKey: formValues.secretAccessKey,
-        sessionToken: formValues.sessionToken,
-        endpoint: endpointsByProtocol.HTTPS,
-        correctClockSkew: true,
-    });
-    const getIceServerConfigResponse = await kinesisVideoSignalingChannelsClient
-        .getIceServerConfig({
-            ChannelARN: channelARN,
-        })
-        .promise();
+    
     const iceServers = [];
-    if (!formValues.natTraversalDisabled && !formValues.forceTURN) {
-        iceServers.push({ urls: `stun:stun.kinesisvideo.${formValues.region}.amazonaws.com:443` });
-    }
-    if (!formValues.natTraversalDisabled) {
-        getIceServerConfigResponse.IceServerList.forEach(iceServer =>
-            iceServers.push({
-                urls: iceServer.Uris,
-                username: iceServer.Username,
-                credential: iceServer.Password,
-            }),
-        );
-    }
+    iceServers.push({
+        urls: "turns:zijiaren.info:443?transport=tcp",
+        username: "yq",
+        credential: "123456",
+    });
+   
     console.log('[MASTER] ICE servers: ', iceServers);
 
     const configuration = {
