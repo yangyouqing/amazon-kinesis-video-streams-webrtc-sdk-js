@@ -132,9 +132,9 @@ export class SignalingClient extends EventEmitter {
 
         if (this.config.role === Role.VIEWER) {
             queryParams['X-Amz-ClientId'] = this.config.clientId;
-            signedURL = `ws://192.168.31.71:8080?channel=1234&clientid=${this.config.clientId}&role=subscriber`;
+            signedURL = `wss://zijiaren.info:44300?channel=1234&clientid=${this.config.clientId}&role=subscriber`;
         } else {
-            signedURL = "ws://192.168.31.71:8080?channel=1234&clientid=1&role=publisher";
+            signedURL = "wss://zijiaren.info:44300?channel=1234&clientid=1&role=publisher";
         }
         //const signedURL = await this.requestSigner.getSignedURL(this.config.channelEndpoint, queryParams, this.dateProvider.getDate());
 

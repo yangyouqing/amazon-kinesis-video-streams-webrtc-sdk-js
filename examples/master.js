@@ -35,12 +35,12 @@ async function startMaster(localView, remoteView, formValues, onStatsReport, onR
     
     const iceServers = [];
     iceServers.push({
-        urls: "turn:zijiaren.info:443",
+        urls: "turn:zijiaren.info:4430",
         username: "yq",
         credential: "123456",
     });
     iceServers.push({
-        urls: "turns:zijiaren.info:443?transport=tcp",
+        urls: "turns:zijiaren.info:4430?transport=tcp",
         username: "yq",
         credential: "123456",
     });
