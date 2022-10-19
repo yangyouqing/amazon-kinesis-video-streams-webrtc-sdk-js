@@ -52,7 +52,8 @@ function getFormValues() {
         openDataChannel: $('#openDataChannel').is(':checked'),
         widescreen: $('#widescreen').is(':checked'),
         fullscreen: $('#fullscreen').is(':checked'),
-        useTrickleICE: $('#useTrickleICE').is(':checked'),
+    //    useTrickleICE: $('#useTrickleICE').is(':checked'),
+       useTrickleICE: true,
         natTraversalDisabled: $('#natTraversalDisabled').is(':checked'),
         forceTURN: $('#forceTURN').is(':checked'),
         accessKeyId: $('#accessKeyId').val(),
@@ -132,7 +133,9 @@ $('#viewer-button').click(async () => {
     $('#form').addClass('d-none');
     $('#viewer').removeClass('d-none');
 
-    const localView = $('#viewer .local-view')[0];
+//    const localView = $('#viewer .local-view')[0];
+    const localView = null;
+
     const remoteView = $('#viewer .remote-view')[0];
     const localMessage = $('#viewer .local-message')[0];
     const remoteMessage = $('#viewer .remote-message')[0];

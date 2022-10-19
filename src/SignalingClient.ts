@@ -129,12 +129,13 @@ export class SignalingClient extends EventEmitter {
         };
 
         var signedURL = "";
-
+        let roomId = Math.floor((Math.random()*1000000)+1);
         if (this.config.role === Role.VIEWER) {
             queryParams['X-Amz-ClientId'] = this.config.clientId;
-            signedURL = `wss://zijiaren.info:44300?channel=1234&clientid=${this.config.clientId}&role=subscriber`;
+            signedURL = `wss://zijiaren.info:44300?channel=0&clientid=${this.config.clientId}&role=subscriber`;
         } else {
-            signedURL = "wss://zijiaren.info:44300?channel=1234&clientid=1&role=publisher";
+            
+            signedURL = `wss://zijiaren.info:44300?clientid=123456&channel=${roomId}&role=publisher`;
         }
         //const signedURL = await this.requestSigner.getSignedURL(this.config.channelEndpoint, queryParams, this.dateProvider.getDate());
 
